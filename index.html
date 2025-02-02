@@ -6,26 +6,24 @@
     <title>Открытие Telegram или Google Docs</title>
     <script>
         function openTelegramOrFallback() {
-            let telegramURL = "https://t.me/tg_check239"; // Укажите название своего Telegram-канала
-            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec"; // Укажите ссылку на Google Docs
+            let telegramURL = "https://t.me/tg_check239"; // Ссылка на Telegram-канал
+            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec"; // Ссылка на Google Docs
 
-            let start = Date.now();
-            let iframe = document.createElement("iframe");
-            iframe.style.display = "none";
-            document.body.appendChild(iframe);
-            iframe.src = telegramURL;
+            let win = window.open(telegramURL, '_blank'); // Пытаемся открыть Telegram в новом окне
 
-            setTimeout(function () {
-                let elapsed = Date.now() - start;
-                if (elapsed < 1500) { // Если Telegram не открылся, редиректим
+            // Если браузер заблокировал pop-up или Telegram не открылся, переходим в Google Docs
+            setTimeout(() => {
+                if (!win || win.closed || typeof win.closed == "undefined") {
                     window.location.href = fallbackURL;
                 }
-            }, 1000);
+            }, 2500);
         }
     </script>
 </head>
-<body onload="openTelegramOrFallback()">
-    <p>Если у вас установлен Telegram, он откроется автоматически.</p>
-    <p>Если нет, вы будете перенаправлены на Google Docs.</p>
+<body>
+    <h2>Открытие Telegram</h2>
+    <p>Если у вас установлен Telegram, нажмите кнопку ниже, и он откроется.</p>
+    <p>Если Telegram не установлен, вы будете перенаправлены в Google Docs.</p>
+    <button onclick="openTelegramOrFallback()" style="padding: 10px 20px; font-size: 16px;">Открыть Telegram</button>
 </body>
 </html>
