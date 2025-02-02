@@ -17,31 +17,28 @@
                 // Для Android используем tg://resolve?domain=
                 const telegramIntent = isIOS() ? "https://telegram.me/tg_check239" : "tg://resolve?domain=tg_check239";
 
-                // Создаём скрытый iframe для обхода ограничений браузера
-                const iframe = document.createElement("iframe");
-                iframe.style.display = "none";
-                iframe.src = telegramIntent;
-                document.body.appendChild(iframe);
+                // Пытаемся открыть Telegram
+                window.location.href = telegramIntent;
 
                 // Запускаем таймер для проверки открытия Telegram
-                const startTime = Date.now();
                 setTimeout(() => {
-                    if (Date.now() - startTime < 2500) {
-                        // Если Telegram не открылся, переходим на fallback
-                        window.location.href = fallbackURL;
-                    }
-                }, 2500);
+                    // Если Telegram не открылся, переходим на fallback
+                    window.location.href = fallbackURL;
+                }, 2500); // 2.5 секунды на открытие Telegram
             } else {
-                // Для десктопов используем стандартную ссылку
-                const startTime = Date.now();
-                window.location.href = telegramURL;
+                // Для десктопов используем стандартную ссылку на Telegram
+                window.open(telegramURL, "_blank");
 
-                // Если Telegram не открылся за 2 секунды, переходим на fallback
-                setTimeout(() => {
-                    if (Date.now() - startTime < 2000) {
+                // Проверяем, открылась ли вкладка с Telegram
+                const checkTelegramOpened = setInterval(() => {
+                    if (window.closed) {
+                        clearInterval(checkTelegramOpened);
+                    } else {
+                        // Если вкладка не открылась, переходим на fallback
+                        clearInterval(checkTelegramOpened);
                         window.location.href = fallbackURL;
                     }
-                }, 2500);
+                }, 2000); // Проверка через 2 секунды
             }
         }
 
