@@ -7,20 +7,19 @@
     <script>
         function openTelegramOrFallback() {
             let telegramURL = "https://t.me/tg_check239"; // Ссылка на Telegram-канал
-            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec""; // Ссылка на Google Docs
-
-            let a = document.createElement('a');
-            a.href = telegramURL;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            // Ожидаем 2.5 секунды — если пользователь остался на странице, показываем кнопку для Google Docs
+            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec"; // Ссылка на Google Docs
+            
+            let startTime = Date.now(); // Засекаем время перед редиректом
+            
+            window.location.href = telegramURL; // Открываем Telegram
+            
+            // Проверяем, остался ли пользователь на странице
             setTimeout(() => {
-                let fallbackButton = document.getElementById("fallbackButton");
-                fallbackButton.style.display = "block";
-            }, 2500);
+                let elapsedTime = Date.now() - startTime;
+                if (elapsedTime < 2000) { // Если Telegram не открылся (время слишком маленькое)
+                    window.location.href = fallbackURL; // Переходим в Google Docs
+                }
+            }, 1500);
         }
     </script>
     <style>
@@ -42,16 +41,11 @@
         button:hover {
             background-color: #0077b6;
         }
-        #fallbackButton {
-            display: none; /* Покажется только если Telegram не откроется */
-            background-color: #ff4444;
-        }
     </style>
 </head>
 <body>
     <h2>Перейти в Telegram</h2>
-    <p>Нажмите кнопку ниже, чтобы открыть Telegram. Если он не установлен, появится кнопка для перехода в Google Docs.</p>
+    <p>Нажмите кнопку ниже, чтобы открыть Telegram. Если он не установлен, вы будете перенаправлены в Google Docs.</p>
     <button onclick="openTelegramOrFallback()">Открыть Telegram</button>
-    <button id="fallbackButton" onclick="window.location.href='https://docs.google.com/document/d/your_google_doc_id'">Перейти в Google Docs</button>
 </body>
 </html>
