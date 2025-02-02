@@ -8,14 +8,19 @@
         function openTelegramOrFallback() {
             let telegramURL = "https://t.me/tg_check239"; // Ссылка на Telegram-канал
             let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec""; // Ссылка на Google Docs
-            
-            // Пробуем открыть Telegram
-            window.location.href = telegramURL;
 
-            // Если Telegram не установлен, через 3 секунды переходим в Google Docs
+            let a = document.createElement('a');
+            a.href = telegramURL;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Ожидаем 2.5 секунды — если пользователь остался на странице, показываем кнопку для Google Docs
             setTimeout(() => {
-                window.location.href = fallbackURL;
-            }, 3000);
+                let fallbackButton = document.getElementById("fallbackButton");
+                fallbackButton.style.display = "block";
+            }, 2500);
         }
     </script>
     <style>
@@ -28,4 +33,25 @@
             padding: 15px 25px;
             font-size: 18px;
             background-color: #0088cc;
-            col
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0077b6;
+        }
+        #fallbackButton {
+            display: none; /* Покажется только если Telegram не откроется */
+            background-color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <h2>Перейти в Telegram</h2>
+    <p>Нажмите кнопку ниже, чтобы открыть Telegram. Если он не установлен, появится кнопка для перехода в Google Docs.</p>
+    <button onclick="openTelegramOrFallback()">Открыть Telegram</button>
+    <button id="fallbackButton" onclick="window.location.href='https://docs.google.com/document/d/your_google_doc_id'">Перейти в Google Docs</button>
+</body>
+</html>
