@@ -6,36 +6,66 @@
     <title>Открытие Telegram или Google Docs</title>
     <script>
         function openTelegramOrFallback() {
-            let telegramURL = "https://t.me/tg_check239"; // Ссылка на Telegram-канал
-            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec""; // Ссылка на Google Docs
+            const telegramURL = "https://t.me/tg_check239"; // Ссылка на Telegram-канал
+            const fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec""; // Ссылка на Google Docs
 
-            // Проверяем, поддерживается ли схема tg://
-            let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            // Проверяем, является ли устройство мобильным
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             if (isMobile) {
-                // На мобильных устройствах пробуем открыть через tg://
-                let startTime = Date.now();
-                window.location.href = "tg://resolve?domain=tg_check239";
+                // Для мобильных устройств пробуем открыть через tg://
+                const startTime = Date.now();
+                const telegramIntent = "tg://resolve?domain=tg_check239";
 
-                // Если приложение не открылось, перенаправляем на fallback
+                const iframe = document.createElement("iframe");
+                iframe.style.display = "none";
+                iframe.src = telegramIntent;
+                document.body.appendChild(iframe);
+
+                // Если приложение не открылось за 2 секунды, переходим на fallback
                 setTimeout(() => {
-                    let elapsedTime = Date.now() - startTime;
-                    if (elapsedTime < 2000) { // Если Telegram не открылся
-                        window.location.href = fallbackURL; // Переходим в Google Docs
+                    if (Date.now() - startTime < 2000) {
+                        window.location.href = fallbackURL; // Переход на Google Docs
                     }
-                }, 1500);
+                }, 2500); // Увеличиваем таймаут до 2500 мс
             } else {
-                // На десктопах используем стандартную ссылку
-                let startTime = Date.now();
+                // Для десктопов используем стандартную ссылку
+                const startTime = Date.now();
                 window.location.href = telegramURL;
 
-                // Если Telegram не открылся, перенаправляем на fallback
+                // Если Telegram не открылся за 2 секунды, переходим на fallback
                 setTimeout(() => {
-                    let elapsedTime = Date.now() - startTime;
-                    if (elapsedTime < 2000) { // Если Telegram не открылся
-                        window.location.href = fallbackURL; // Переходим в Google Docs
+                    if (Date.now() - startTime < 2000) {
+                        window.location.href = fallbackURL; // Переход на Google Docs
                     }
-                }, 1500);
+                }, 2500); // Увеличиваем таймаут до 2500 мс
             }
         }
-    </
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0077b6;
+        }
+    </style>
+</head>
+<body>
+    <h2>Перейти в Telegram</h2>
+    <p>Нажмите кнопку ниже, чтобы открыть Telegram. Если он не установлен, вы будете перенаправлены в Google Docs.</p>
+    <button onclick="openTelegramOrFallback()">Открыть Telegram</button>
+</body>
+</html>
