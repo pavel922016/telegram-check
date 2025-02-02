@@ -24,12 +24,12 @@
                 setTimeout(() => {
                     // Если Telegram не открылся, переходим на fallback
                     window.location.href = fallbackURL;
-                }, 2500); // 2.5 секунды на открытие Telegram
+                }, 4000); // Увеличено время ожидания (4 секунды) для мобильных устройств
             } else {
-                // Для десктопов используем стандартную ссылку на Telegram
+                // Для десктопов используем ссылку для открытия в браузере
                 window.open(telegramURL, "_blank");
 
-                // Проверяем, открылась ли вкладка с Telegram
+                // Проверяем, открылся ли Telegram
                 const checkTelegramOpened = setInterval(() => {
                     if (window.closed) {
                         clearInterval(checkTelegramOpened);
@@ -38,7 +38,7 @@
                         clearInterval(checkTelegramOpened);
                         window.location.href = fallbackURL;
                     }
-                }, 2000); // Проверка через 2 секунды
+                }, 4000); // Проверка через 4 секунды для десктопов
             }
         }
 
