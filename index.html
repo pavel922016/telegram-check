@@ -6,22 +6,26 @@
     <title>Открытие Telegram или Google Docs</title>
     <script>
         function openTelegramOrFallback() {
-            let telegramURL = "tg://resolve?domain=tg_check239"; // Ссылка на Telegram-канал
-            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec"; // Ссылка на Google Docs
+            let telegramURL = "https://t.me/tg_check239"; // Ссылка на Telegram-канал
+            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec""; // Ссылка на Google Docs
             
             // Пробуем открыть Telegram
             window.location.href = telegramURL;
 
-            // Если Telegram не открылся (браузер остался на странице), через 3 сек. редирект в Google Docs
+            // Если Telegram не установлен, через 3 секунды переходим в Google Docs
             setTimeout(() => {
                 window.location.href = fallbackURL;
             }, 3000);
         }
     </script>
-</head>
-<body onload="openTelegramOrFallback()">
-    <h2>Перенаправление...</h2>
-    <p>Если у вас установлен Telegram, он откроется автоматически.</p>
-    <p>Если нет, через несколько секунд вы будете перенаправлены в Google Docs.</p>
-</body>
-</html>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            background-color: #0088cc;
+            col
