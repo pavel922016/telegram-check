@@ -7,7 +7,7 @@
     <script>
         function openTelegramOrFallback() {
             const telegramURL = "https://t.me/tg_check239"; // Ссылка на Telegram-канал
-            const fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec"; // Ссылка на Google Docs
+            const fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec""; // Ссылка на Google Docs
 
             // Проверяем, является ли устройство мобильным
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -17,22 +17,31 @@
                 // Для Android используем tg://resolve?domain=
                 const telegramIntent = isIOS() ? "https://telegram.me/tg_check239" : "tg://resolve?domain=tg_check239";
 
-                // Пытаемся открыть Telegram
-                window.location.href = telegramIntent;
+                // Создаём скрытый iframe для обхода ограничений браузера
+                const iframe = document.createElement("iframe");
+                iframe.style.display = "none";
+                iframe.src = telegramIntent;
+                document.body.appendChild(iframe);
 
                 // Запускаем таймер для проверки открытия Telegram
+                const startTime = Date.now();
                 setTimeout(() => {
-                    // Если Telegram не открылся, переходим на fallback
-                    window.location.href = fallbackURL;
-                }, 2500); // 2.5 секунды на открытие Telegram
+                    if (Date.now() - startTime < 2500) {
+                        // Если Telegram не открылся, переходим на fallback
+                        window.location.href = fallbackURL;
+                    }
+                }, 2500);
             } else {
                 // Для десктопов используем стандартную ссылку
+                const startTime = Date.now();
                 window.location.href = telegramURL;
 
                 // Если Telegram не открылся за 2 секунды, переходим на fallback
                 setTimeout(() => {
-                    window.location.href = fallbackURL;
-                }, 2000); // 2 секунды на открытие Telegram
+                    if (Date.now() - startTime < 2000) {
+                        window.location.href = fallbackURL;
+                    }
+                }, 2500);
             }
         }
 
