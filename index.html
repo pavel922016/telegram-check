@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Открытие Telegram или Google Docs</title>
+    <script>
+        function openTelegramOrFallback() {
+            let telegramURL = "tg://resolve?telegram_check"; // Укажите название своего Telegram-канала
+            let fallbackURL = "https://script.google.com/macros/s/AKfycbxbzLZuEnUgp7ijFIC5jAt-cryZofyeyIQgXoqZJD9nWPlBaQbjpPbSXFhdpDsoO4udSw/exec"; // Укажите ссылку на Google Docs
+
+            let start = Date.now();
+            let iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+            iframe.src = telegramURL;
+
+            setTimeout(function () {
+                let elapsed = Date.now() - start;
+                if (elapsed < 1500) { // Если Telegram не открылся, редиректим
+                    window.location.href = fallbackURL;
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+<body onload="openTelegramOrFallback()">
+    <p>Если у вас установлен Telegram, он откроется автоматически.</p>
+    <p>Если нет, вы будете перенаправлены на Google Docs.</p>
+</body>
+</html>
